@@ -10,6 +10,9 @@ gem 'puma', '~> 3.11'
 
 # Use Mongodb as the database
 gem 'mongoid', '~> 7.0', '>= 7.0.2'
+
+gem 'sidekiq', '~> 5.2', '>= 5.2.5'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
@@ -27,6 +30,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'dotenv-rails'
 end
 
 group :development do

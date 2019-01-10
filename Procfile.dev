@@ -1,2 +1,4 @@
+redis: redis-server config/redis-development.conf
 mongo: mongod --dbpath tmp/db/data
 web: bundle exec rails server -p 3000
+worker: bundle exec sidekiq -t 25

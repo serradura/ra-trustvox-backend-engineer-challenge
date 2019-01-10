@@ -9,6 +9,7 @@ Things you may want to cover:
   * 2.6.0
 
 * System dependencies
+  * Redis
   * MongoDB
   * For development:
     * [asdf](https://github.com/asdf-vm/asdf#installation)
