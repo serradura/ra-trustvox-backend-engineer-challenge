@@ -1,0 +1,2 @@
+mongo: mongod --dbpath tmp/db/data
+web: bundle exec rails server -p 3000
