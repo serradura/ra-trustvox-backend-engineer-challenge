@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RoutesTest < ActionDispatch::IntegrationTest
+class Routes::AliasesTest < ActionDispatch::IntegrationTest
   def application_routes
     @application_routes ||=
       ActionDispatch::Routing::RoutesInspector

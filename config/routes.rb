@@ -11,5 +11,7 @@ Rails.application.routes.draw do
     post '/', to: 'v1/create#call'
   end
 
+  root to: 'errors/v1/not_found#call', via: :all
+
   match '*unmatched', to: 'errors/v1/not_found#call', via: :all
 end
