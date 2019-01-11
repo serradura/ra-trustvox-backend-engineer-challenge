@@ -2,17 +2,11 @@ require 'test_helper'
 
 module Complaints
   class V1::CreateControllerTest < ActionDispatch::IntegrationTest
-    def resource_path
-      complaints_v1_create_url(format: 'json')
+    setup do
+      @resource_path = complaints_v1_create_url(format: 'json')
     end
 
-    def assert_response_error(message)
-      expected_body = { 'error' => [message] }
-
-      assert_equal expected_body, JSON.parse(@response.body)
-    end
-
-    test 'should return "not found" when is has invalid constraints' do
+    test 'should return "not found" when it has invalid constraints' do
       post complaints_v1_create_url
 
       assert_response :not_found
@@ -23,7 +17,7 @@ module Complaints
       #
       # no data
       #
-      post resource_path, params: {}
+      post @resource_path, params: {}
 
       assert_response :bad_request
       assert_response_error 'param is missing or the value is empty: complaint'
@@ -31,7 +25,7 @@ module Complaints
       #
       # no complaint data
       #
-      post resource_path, params: {
+      post @resource_path, params: {
         complaint: {}
       }
 
@@ -41,7 +35,7 @@ module Complaints
       #
       # without the complaint title
       #
-      post resource_path, params: {
+      post @resource_path, params: {
         complaint: { locale: 'b', company: 'c', description: 'd'}
       }
 
@@ -51,7 +45,7 @@ module Complaints
       #
       # without the complaint locale
       #
-      post resource_path, params: {
+      post @resource_path, params: {
         complaint: { title: 'a', company: 'c', description: 'd'}
       }
 
@@ -61,7 +55,7 @@ module Complaints
       #
       # without the complaint company
       #
-      post resource_path, params: {
+      post @resource_path, params: {
         complaint: { title: 'a', locale: 'b', description: 'd'}
       }
 
@@ -71,7 +65,7 @@ module Complaints
       #
       # without the complaint description
       #
-      post resource_path, params: {
+      post @resource_path, params: {
         complaint: { title: 'a', locale: 'b', company: 'c'}
       }
 
@@ -90,7 +84,7 @@ module Complaints
         # assertions
         #
         assert_changes -> { Document.count } do
-          post resource_path, params: {
+          post @resource_path, params: {
             complaint: { title: 'a', locale: 'b', company: 'c', description: 'd'}
           }
         end

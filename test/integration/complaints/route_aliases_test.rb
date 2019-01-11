@@ -2,14 +2,6 @@ require 'test_helper'
 
 module Complaints
   class RouteAliasesTest < ActionDispatch::IntegrationTest
-    def application_routes
-      @application_routes ||=
-        ActionDispatch::Routing::RoutesInspector
-          .new(Rails.application.routes.routes)
-          .format(ActionDispatch::Routing::ConsoleFormatter.new)
-          .split("\n")
-    end
-
     test "POST /complaints" do
       post complaints_url, headers: { 'Content-Type': 'application/json' }
 
@@ -19,14 +11,7 @@ module Complaints
 
       refute @response.status == 404
 
-      #
-      # Auditing its controller,
-      # because of the path is an alias to other resource.
-      #
-      assert application_routes
-        .find { |r| r.match?(/POST.*\/complaints\(/) }
-        .strip
-        .ends_with?('complaints/v1/create#call')
+      assert_route('POST /complaints', to: 'complaints/v1/create#call')
     end
 
     test "GET /complaints" do
@@ -38,14 +23,27 @@ module Complaints
 
       refute @response.status == 404
 
-      #
-      # Auditing its controller,
-      # because of the path is an alias to other resource.
-      #
+      assert_route('GET /complaints', to: 'complaints/v1/fetch_all#call')
+    end
+
+    private
+
+    def application_routes
+      @application_routes ||=
+        ActionDispatch::Routing::RoutesInspector
+          .new(Rails.application.routes.routes)
+          .format(ActionDispatch::Routing::ConsoleFormatter.new)
+          .split("\n")
+    end
+
+    def assert_route(route_alias, to:)
+      route_pattern =
+        Regexp.new("#{route_alias.split(/\s+/).join('\s+')}\\(")
+
       assert application_routes
-        .find { |r| r.match?(/GET.*\/complaints\(/) }
+        .find { |r| r.match?(route_pattern) }
         .strip
-        .ends_with?('complaints/v1/fetch_all#call')
+        .ends_with?(to)
     end
   end
 end

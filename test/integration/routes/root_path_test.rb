@@ -1,36 +1,34 @@
 require 'test_helper'
 
 class Routes::RootPathTest < ActionDispatch::IntegrationTest
-  def assert_not_found_response
-    expected_body = { 'error' => ['the requested resource was not found'] }
-
-    assert_equal expected_body, JSON.parse(@response.body)
+  setup do
+    @message = 'the requested resource was not found'
   end
 
-  test '{GET,POST,PUT,PATCH} /' do
+  test '{GET,POST,PUT,PATCH,DELETE} /' do
     get '/'
 
     assert_response :not_found
-    assert_not_found_response
+    assert_response_error(@message)
 
     post '/'
 
     assert_response :not_found
-    assert_not_found_response
+    assert_response_error(@message)
 
     put '/'
 
     assert_response :not_found
-    assert_not_found_response
+    assert_response_error(@message)
 
     patch '/'
 
     assert_response :not_found
-    assert_not_found_response
+    assert_response_error(@message)
 
     delete '/'
 
     assert_response :not_found
-    assert_not_found_response
+    assert_response_error(@message)
   end
 end

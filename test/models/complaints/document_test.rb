@@ -3,14 +3,12 @@ require 'test_helper'
 module Complaints
   class DocumentTest < ActiveSupport::TestCase
     module CheckFieldPresenceValidation
-      Result = Struct.new(:error) do
-        def has_an_error?; error.present?; end
-      end
+      Result = Struct.new(:has_an_error?)
 
       def self.of(document)
         errors = document.tap(&:valid?).errors
 
-        -> field { Result.new(errors[field]) }
+        -> field { Result.new(errors[field].present?) }
       end
     end
 
