@@ -44,6 +44,6 @@ class Routes::AliasesTest < ActionDispatch::IntegrationTest
     assert application_routes
       .find { |r| r.match?(/GET.*\/complaints\(/) }
       .strip
-      .ends_with?('complaints/v1/index#call')
+      .ends_with?('complaints/v1/fetch_all#call')
   end
 end

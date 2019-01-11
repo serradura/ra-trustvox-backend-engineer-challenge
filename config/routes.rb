@@ -3,13 +3,13 @@
 require_relative './routes/json_constraint'
 
 Rails.application.routes.draw do
-  namespace(complaints = :complaints, constraints: Routes::JSONConstraint) do
+  namespace :complaints, constraints: Routes::JSONConstraint do
     namespace :v1 do
-      get :index, to: 'index#call'
+      get :fetch_all, to: 'fetch_all#call', path: 'fetch-all'
       post :create, to: 'create#call'
     end
 
-    get '/', to: 'v1/index#call'
+    get '/', to: 'v1/fetch_all#call'
     post '/', to: 'v1/create#call'
   end
 

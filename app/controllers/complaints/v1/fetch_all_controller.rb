@@ -2,7 +2,7 @@
 
 module Complaints
   module V1
-    class IndexController < ApplicationController
+    class FetchAllController < ApplicationController
       def call
         render status: 418, json: {}
       end
