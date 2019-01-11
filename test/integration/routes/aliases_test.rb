@@ -23,8 +23,27 @@ class Routes::AliasesTest < ActionDispatch::IntegrationTest
     # because of the path is an alias to other resource.
     #
     assert application_routes
-      .find { |r| r.match?(/complaints POST/) }
+      .find { |r| r.match?(/POST.*\/complaints\(/) }
       .strip
       .ends_with?('complaints/v1/create#call')
+  end
+
+  test "GET /complaints" do
+    get complaints_url, headers: { 'Content-Type': 'application/json' }
+
+    refute @response.status == 404
+
+    get complaints_url(format: 'json')
+
+    refute @response.status == 404
+
+    #
+    # Auditing its controller,
+    # because of the path is an alias to other resource.
+    #
+    assert application_routes
+      .find { |r| r.match?(/GET.*\/complaints\(/) }
+      .strip
+      .ends_with?('complaints/v1/index#call')
   end
 end
