@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       post :create, to: 'create#call'
     end
+
+    post '/', to: 'v1/create#call'
   end
 
   match '*unmatched', to: 'errors/v1/not_found#call', via: :all
