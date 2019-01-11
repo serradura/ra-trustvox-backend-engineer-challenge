@@ -3,15 +3,16 @@
 module Complaints
   module V1
     class CreateController < ApplicationController
+      UNFILLED_REQUIRED_PARAMS_ERROR =
+        "required params are unfilled: #{Complaints::Fields::ALL}"
+
       rescue_from ActionController::ParameterMissing,
                   with: ExceptionHandlers::ParameterMissing
 
-      FIELDS = Document.fields.keys.reject { |field| field == '_id' }
-
       def call
-        if invalid_params?
+        if unfilled_required_params?
           render status: :bad_request,
-                 json: { error: ['invalid parameters was found'] }
+                 json: { error: [UNFILLED_REQUIRED_PARAMS_ERROR]}
         else
           create_later!
 
@@ -22,13 +23,14 @@ module Complaints
       private
 
       def resource_params
-        @resource_params ||= params.require(:complaint).permit(*FIELDS)
+        @resource_params ||= params.require(:complaint)
+                                   .permit(*Complaints::Fields::ALL)
       end
 
-      def invalid_params?
+      def unfilled_required_params?
         return true if resource_params.empty?
 
-        FIELDS.any? { |field| resource_params[field].nil? }
+        Complaints::Fields::ALL.any? { |field| resource_params[field].nil? }
       end
 
       def create_later!

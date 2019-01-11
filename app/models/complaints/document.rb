@@ -4,11 +4,11 @@ module Complaints
   class Document
     include Mongoid::Document
 
-    field :title, type: String
-    field :locale, type: String
-    field :company, type: String
-    field :description, type: String
+    field Fields::TITLE, type: String
+    field Fields::LOCALE, type: String
+    field Fields::COMPANY, type: String
+    field Fields::DESCRIPTION, type: String
 
-    validates :title, :locale, :company, :description, presence: true
+    validates *Fields::ALL, presence: true
   end
 end
