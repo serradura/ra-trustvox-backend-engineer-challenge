@@ -41,8 +41,7 @@ __Job queues:__ Sidekiq (via ActiveJob)
 - [x] Add a Restful resource to create complaints. e.g: `POST /complaints`
 - [ ] Add a Restful resource to fetch complaints. e.g: `GET /complaints`
 - [ ] Add a Restful resource to fetch a single complaint. e.g: `GET /complaints/:id`
-- [ ] Refactoring: Create a new branch to implementing a service layer to be used with the controllers.
+- [ ] Add code quality tools. e.g: Rubocop, Code Rubycritic...
+- [ ] Refactoring: Create a new branch to implement a service layer to be used with the controllers.
+- [ ] Deploy: Setup the application to deploy it via Heroku
 - [ ] Add an API rate limiting/throttling. (Rack::Attack)
-- [ ] Deploy: Setup the application to deploy it via Heroku.
-- [ ] Add code quality tools. e.g: Rubocop, Code climate/Rubycritic.
-  Look this example from my other project: https://github.com/serradura/backend-code-challenge#verifica%C3%A7%C3%A3o-da-sa%C3%BAde-do-projeto
