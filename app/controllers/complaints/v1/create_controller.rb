@@ -3,6 +3,9 @@
 module Complaints
   module V1
     class CreateController < ApplicationController
+      rescue_from ActionController::ParameterMissing,
+                  with: ExceptionHandlers::ParameterMissing
+
       FIELDS = Document.fields.keys.reject { |field| field == '_id' }
 
       def call
