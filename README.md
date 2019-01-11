@@ -38,11 +38,11 @@ __Job queues:__ Sidekiq (via ActiveJob)
 - [x] Provides an easy way to setup the project (asdf + foreman).
 - [x] Mount the `Rails API` and the `Sidekiq Admin` in config.ru.
 - [x] Decouple the application in modules from the beginning. e.g: All entities/resources exists inside of `Complaints` namespace - Complaints:Document, Complaints::V1::CreateController.
-- [x] Add a Restful resource to create complaints. e.g: `/complaints/v1/create`
-- [ ] Add a Restful resource to fetch complaints. e.g: `/complaints/v1/list-all`
-- [ ] Add a Restful resource to fetch a single complaint. e.g: `/complaints/v1/show/:id`
+- [x] Add a Restful resource to create complaints. e.g: `POST /complaints`
+- [ ] Add a Restful resource to fetch complaints. e.g: `GET /complaints`
+- [ ] Add a Restful resource to fetch a single complaint. e.g: `GET /complaints/:id`
+- [ ] Refactoring: Create a new branch to implementing a service layer to be used with the controllers.
 - [ ] Add an API rate limiting/throttling. (Rack::Attack)
 - [ ] Deploy: Setup the application to deploy it via Heroku.
-- [ ] Refactor: Create a new branch to implementing a service layer to be used with the controllers.
 - [ ] Add code quality tools. e.g: Rubocop, Code climate/Rubycritic.
   Look this example from my other project: https://github.com/serradura/backend-code-challenge#verifica%C3%A7%C3%A3o-da-sa%C3%BAde-do-projeto
