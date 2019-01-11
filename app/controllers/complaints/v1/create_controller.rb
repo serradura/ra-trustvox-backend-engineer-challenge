@@ -9,11 +9,14 @@ module Complaints
       FIELDS = Document.fields.keys.reject { |field| field == '_id' }
 
       def call
-        status = invalid_params? ? :bad_request : :accepted
+        if invalid_params?
+          render status: :bad_request,
+                 json: { error: ['invalid parameters was found'] }
+        else
+          create_later!
 
-        create_later! if status == :accepted
-
-        render status: status, json: {}
+          render status: :no_content
+        end
       end
 
       private

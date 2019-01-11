@@ -3,8 +3,10 @@
 module Errors
   module V1
     class NotFoundController < ApplicationController
+      MESSAGE = 'the requested resource was not found'
+
       def call
-        render status: :not_found, json: { error: 'No route found' }
+        render status: :not_found, json: { error: [MESSAGE] }
       end
     end
   end

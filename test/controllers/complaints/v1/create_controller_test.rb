@@ -2,13 +2,20 @@ require 'test_helper'
 
 module Complaints
   class V1::CreateControllerTest < ActionDispatch::IntegrationTest
-    test 'should return "not found" when is an invalid path' do
+    def assert_response_error(message)
+      expected_body = { 'error' => [message] }
+
+      assert JSON.parse(@response.body) == expected_body
+    end
+
+    test 'should return "not found" when is has invalid constraints' do
       post complaints_v1_create_url
 
       assert_response :not_found
+      assert_response_error 'the requested resource was not found'
     end
 
-    test 'should not returns "not found" when resolving its constraints' do
+    test 'should not returns "not found" when has valid constraints' do
       post complaints_v1_create_url, headers: { 'Content-Type': 'application/json' }
 
       refute @response.status == 404
@@ -24,6 +31,9 @@ module Complaints
       #
       post complaints_v1_create_url(format: 'json'), params: {}
 
+      assert_response :bad_request
+      assert_response_error 'param is missing or the value is empty: complaint'
+
       #
       # no complaint data
       #
@@ -32,6 +42,7 @@ module Complaints
       }
 
       assert_response :bad_request
+      assert_response_error 'param is missing or the value is empty: complaint'
 
       #
       # without the complaint title
@@ -41,6 +52,7 @@ module Complaints
       }
 
       assert_response :bad_request
+      assert_response_error 'invalid parameters was found'
 
       #
       # without the complaint locale
@@ -50,6 +62,7 @@ module Complaints
       }
 
       assert_response :bad_request
+      assert_response_error 'invalid parameters was found'
 
       #
       # without the complaint company
@@ -59,6 +72,7 @@ module Complaints
       }
 
       assert_response :bad_request
+      assert_response_error 'invalid parameters was found'
 
       #
       # without the complaint description
@@ -68,9 +82,10 @@ module Complaints
       }
 
       assert_response :bad_request
+      assert_response_error 'invalid parameters was found'
     end
 
-    test 'should return "accepted" when receiving valid params' do
+    test 'should return "204 - no content" when receiving valid params' do
       ActiveJob::Base.queue_adapter.tap do |queue_adapter|
         #
         # setup
@@ -86,7 +101,7 @@ module Complaints
           }
         end
 
-        assert_response :accepted
+        assert_response :no_content
 
         #
         # teardown
