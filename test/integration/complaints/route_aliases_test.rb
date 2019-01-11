@@ -26,6 +26,32 @@ module Complaints
       assert_route('GET /complaints', to: 'complaints/v1/fetch_all#call')
     end
 
+    test "GET /complaints/:id" do
+      #
+      # setup
+      #
+      Document.delete_all
+      complaint = create_complaint!
+
+      #
+      # assertions
+      #
+      get complaints_show_url(complaint.id), headers: { 'Content-Type': 'application/json' }
+
+      refute @response.status == 404
+
+      get complaints_show_url(complaint.id, format: 'json')
+
+      refute @response.status == 404
+
+      assert_route('GET /complaints/:id', to: 'complaints/v1/fetch#call')
+
+      #
+      # teardown
+      #
+      Document.delete_all
+    end
+
     private
 
     def application_routes

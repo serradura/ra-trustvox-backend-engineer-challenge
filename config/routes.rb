@@ -6,10 +6,14 @@ Rails.application.routes.draw do
   namespace :complaints, constraints: Routes::JSONConstraint do
     namespace :v1 do
       get :fetch_all, to: 'fetch_all#call', path: 'fetch-all'
+      get 'fetch/:id', to: 'fetch#call', as: :fetch
+
       post :create, to: 'create#call'
     end
 
     get '/', to: 'v1/fetch_all#call'
+    get '/:id', to: 'v1/fetch#call', as: :show
+
     post '/', to: 'v1/create#call'
   end
 
