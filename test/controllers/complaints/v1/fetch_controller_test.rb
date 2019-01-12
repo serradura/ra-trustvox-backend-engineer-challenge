@@ -27,8 +27,16 @@ module Complaints
 
       get resource_path(record.id)
 
-      expected_json = { 'id' => record.id.to_s }
-        .merge(Fields::ALL.map{ |f| [f, record[f]] }.to_h)
+      record_id = record.id.to_s
+
+      expected_json =
+        { 'id' => record_id }
+          .merge(Fields::ALL.map { |f| [f, record[f]] }.to_h)
+          .merge('_links' => [{
+            'rel' => 'self',
+            'href' => complaints_show_url(record_id),
+            'type' => 'GET'
+          }])
 
       assert_response :ok
       assert_equal expected_json, JSON.parse(@response.body)

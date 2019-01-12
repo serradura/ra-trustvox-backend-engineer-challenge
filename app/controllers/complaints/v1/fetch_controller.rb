@@ -3,16 +3,22 @@
 module Complaints
   module V1
     class FetchController < ApplicationController
+      rescue_from Mongoid::Errors::DocumentNotFound do
+        error = "Complaint not found with id: \"#{params[:id]}\""
+
+        render status: :not_found, json: { error: [error] }
+      end
+
       def call
         record = Document.find(params[:id])
 
-        serialize = Serializer.new(Fields::ALL)
+        link_to_complaint =
+          HATEOAS::LinkToGet[:self, builder: method(:complaints_show_url)]
 
-        render status: 200, json: serialize.call(record)
-      rescue Mongoid::Errors::DocumentNotFound => e
-        render status: :not_found, json: {
-          error: ["Complaint not found with id: \"#{params[:id]}\""]
-        }
+        serialize =
+          Serializer.new(Fields::ALL) >> HATEOAS::Links[link_to_complaint]
+
+        render status: 200, json: serialize[record]
       end
     end
   end

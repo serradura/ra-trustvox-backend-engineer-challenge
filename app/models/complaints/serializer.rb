@@ -2,12 +2,14 @@
 
 module Complaints
   class Serializer
+    delegate :>>, to: :to_proc
+
     def initialize(fields)
       @fields = fields
     end
 
     def call(record)
-      { id: record.id.to_s }
+      { 'id' => record.id.to_s }
         .merge! map_fields_values(record)
     end
 
