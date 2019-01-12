@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
-module HATEOAS # Hypermedia as the Engine of Application State
+#
+# HATEOAS = Hypermedia as the Engine of Application State
+#
+module HATEOAS
   LinkToGet = -> (rel, builder:) do
     -> data do
       { rel: rel, href: builder.(data['id']), type: 'GET' }

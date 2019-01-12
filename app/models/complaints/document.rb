@@ -9,6 +9,6 @@ module Complaints
     field Fields::COMPANY, type: String
     field Fields::DESCRIPTION, type: String
 
-    validates *Fields::ALL, presence: true
+    validates(*Fields::ALL, presence: true)
   end
 end
