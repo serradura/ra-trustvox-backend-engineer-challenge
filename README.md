@@ -1,6 +1,7 @@
-# Complaints handler
+# RA Trustvox - Backend Engineer Challenge
 
-This application provide some services to persist and fetch (To-do) complaints.
+To achieve some of the [challenge goals](https://gist.github.com/cleytonmessias/6098d0747743620dfc58f977a8f1ded7),
+this application provides services/resources to persist and fetch complaints.
 
 ## Ruby version
 > 2.6.0
