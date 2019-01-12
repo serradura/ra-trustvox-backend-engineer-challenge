@@ -9,13 +9,35 @@ module Complaints
 
       private
 
+      def permitted_params
+        params.permit(:fields)
+      end
+
+      def fields_to_select
+        @fields_to_select ||= begin
+          fields =
+            String(permitted_params[:fields]).split(',').map(&:downcase)
+
+          Fields::ALL
+            .filter { |field| fields.include?(field) }
+            .then { |filtered| filtered if filtered.present? }
+            .then { |result| Array(result) }
+        end
+      end
+
       def fetch_relation
-        Document.all
+        criteria = Document.all
+
+        return criteria if fields_to_select.blank?
+
+        fields = ['_id'] + fields_to_select
+
+        criteria.only(*fields)
       end
 
       def fetch_data
         serialize =
-          Serializer.new(Fields::ALL)
+          Serializer.new(fields_to_select.presence || Fields::ALL)
 
         link_to_complaint =
           HATEOAS::LinkToGet[:complaint, builder: method(:complaints_show_url)]

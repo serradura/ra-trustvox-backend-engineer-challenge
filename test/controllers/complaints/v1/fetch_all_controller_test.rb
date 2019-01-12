@@ -43,10 +43,54 @@ module Complaints
       assert_equal expected_json, JSON.parse(@response.body)
     end
 
+    test 'should return "ok" when receive the fields filter without valid options' do
+      records = 2.times.map { create_complaint! }
+
+      get resource_path(format: 'json', fields: 'aaa,bbb')
+
+      expected_json = records.map do |record|
+        record_id = record.id.to_s
+
+        { 'id' => record_id }
+          .merge(Fields::ALL.map { |f| [f, record[f]] }.to_h)
+          .merge('_links' => [{
+            'rel' => 'complaint',
+            'href' => complaints_show_url(record_id),
+            'type' => 'GET'
+          }])
+      end
+
+      assert_response :ok
+      assert_equal expected_json, JSON.parse(@response.body)
+    end
+
+    test 'should return "ok" when receive the fields filter with valid options' do
+      records = 2.times.map { create_complaint! }
+
+      get resource_path(format: 'json', fields: 'title,company')
+
+      expected_json = records.map do |record|
+        record_id = record.id.to_s
+
+        { 'id' => record_id }
+          .merge(
+            [Fields::TITLE, Fields::COMPANY].map { |f| [f, record[f]] }.to_h
+          )
+          .merge('_links' => [{
+            'rel' => 'complaint',
+            'href' => complaints_show_url(record_id),
+            'type' => 'GET'
+          }])
+      end
+
+      assert_response :ok
+      assert_equal expected_json, JSON.parse(@response.body)
+    end
+
     private
 
-    def resource_path
-      complaints_v1_fetch_all_url(format: 'json')
+    def resource_path(options = {format: 'json'})
+      complaints_v1_fetch_all_url(options)
     end
   end
 end
