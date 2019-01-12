@@ -1,0 +1,52 @@
+AllCops:
+  Exclude:
+    - Rakefile
+    - db/*
+    - bin/*
+    - config/**/*
+    - test/**/*.rb
+    - db/migrate/**/*
+    - node_modules/**/*
+    - config.ru
+  TargetRubyVersion: 2.6
+  TargetRailsVersion: 5.2
+
+Style/SignalException:
+  Exclude:
+    - lib/tasks/health.rake
+
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - Gemfile
+
+Metrics/LineLength:
+  Exclude:
+    - Gemfile
+
+Style/SymbolArray:
+  Exclude:
+    - Gemfile
+
+Style/Documentation:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
+
+Style/ModuleFunction:
+  Enabled: false
+
+Style/Lambda:
+  EnforcedStyle: literal
+
+Style/LambdaCall:
+  Enabled: false
+
+Style/StabbyLambdaParentheses:
+  Enabled: false
+
+Layout/SpaceInLambdaLiteral:
+  Enabled: false

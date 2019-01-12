@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+require 'fileutils'
+include FileUtils
+
+# path to your application root.
+APP_ROOT = File.expand_path('..', __dir__)
+
+chdir APP_ROOT do
+  git_hooks_prepush = '.git/hooks/pre-push'
+
+  unless File.exist?(git_hooks_prepush)
+    File.open(git_hooks_prepush, 'w') do |f|
+      f.write(<<~HOOK)
+        bundle exec rake health
+        health=$?
+
+        if [ $health -eq 0 ]; then
+          echo "\\n\\033[32mThe project is healthy, pushing...\\033[0;39m\\n"
+          exit 0
+        else
+          echo "\\n\\033[1;31mCannot push! The quality has been compromised.\\033[0;39m\\n"
+          exit 1
+        fi
+      HOOK
+    end
+
+    system("chmod +x #{git_hooks_prepush}")
+
+    puts "#{git_hooks_prepush} was created."
+  end
+end
