@@ -3,10 +3,10 @@
 module Errors
   module V1
     class NotFoundController < ApplicationController
-      MESSAGE = 'the requested resource was not found'
+      RESULT = Serializer['the requested resource was not found']
 
       def call
-        render status: :not_found, json: { error: [MESSAGE] }
+        render status: :not_found, json: RESULT
       end
     end
   end

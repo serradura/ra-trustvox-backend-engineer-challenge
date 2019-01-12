@@ -4,9 +4,10 @@ module Complaints
   module V1
     class FetchController < ApplicationController
       rescue_from Mongoid::Errors::DocumentNotFound do
-        error = "Complaint not found with id: \"#{params[:id]}\""
+        result =
+          Errors::Serializer["complaint not found with id: \"#{params[:id]}\""]
 
-        render status: :not_found, json: { error: [error] }
+        render status: :not_found, json: result
       end
 
       def call

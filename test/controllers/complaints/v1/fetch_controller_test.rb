@@ -19,7 +19,7 @@ module Complaints
       get resource_path('dont-find-me')
 
       assert_response :not_found
-      assert_response_error 'Complaint not found with id: "dont-find-me"'
+      assert_response_error 'complaint not found with id: "dont-find-me"'
     end
 
     test 'should return "ok" when the document was found' do

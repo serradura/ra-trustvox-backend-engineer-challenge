@@ -3,16 +3,16 @@
 module Complaints
   module V1
     class CreateController < ApplicationController
-      UNFILLED_REQUIRED_PARAMS_ERROR =
+      UNFILLED_REQUIRED_PARAMS_ERROR = Errors::Serializer.call(
         "required params are unfilled: #{Complaints::Fields::ALL}"
+      )
 
       rescue_from ActionController::ParameterMissing,
-                  with: ExceptionHandlers::ParameterMissing
+                  with: Errors::ExceptionHandlers::ParameterMissing
 
       def call
         if unfilled_required_params?
-          render status: :bad_request,
-                 json: { error: [UNFILLED_REQUIRED_PARAMS_ERROR]}
+          render status: :bad_request, json: UNFILLED_REQUIRED_PARAMS_ERROR
         else
           create_later!
 
