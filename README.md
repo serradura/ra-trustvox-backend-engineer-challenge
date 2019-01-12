@@ -39,7 +39,7 @@ __Job queues:__ Sidekiq (via ActiveJob)
 - [x] Mount the `Rails API` and the `Sidekiq Admin` in config.ru.
 - [x] Decouple the application in modules from the beginning. e.g: All entities/resources exists inside of `Complaints` namespace - Complaints:Document, Complaints::V1::CreateController.
 - [x] Add a Restful resource to create complaints. e.g: `POST /complaints`
-- [ ] Add a Restful resource to fetch complaints. e.g: `GET /complaints`
+- [x] Add a Restful resource to fetch complaints. e.g: `GET /complaints`
 - [x] Add a Restful resource to fetch a single complaint. e.g: `GET /complaints/:id`
 - [ ] Add code quality tools. e.g: Rubocop, Code Rubycritic...
 - [ ] Refactoring: Create a new branch to implement a service layer to be used with the controllers.
