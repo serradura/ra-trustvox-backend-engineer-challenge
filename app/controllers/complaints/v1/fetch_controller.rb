@@ -17,7 +17,7 @@ module Complaints
           HATEOAS::LinkToGet[:self, builder: method(:complaints_show_url)]
 
         serialize =
-          Serializer.new(Fields::ALL) >> HATEOAS::Links[link_to_complaint]
+          Serializer.new(Fields::ALL) >> HATEOAS::SetLinks[link_to_complaint]
 
         render status: 200, json: serialize[record]
       end

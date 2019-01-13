@@ -42,7 +42,7 @@ module Complaints
         link_to_complaint =
           HATEOAS::LinkToGet[:complaint, builder: method(:complaints_show_url)]
 
-        fetch_relation.map(&serialize >> HATEOAS::Links[link_to_complaint])
+        fetch_relation.map(&serialize >> HATEOAS::SetLinks[link_to_complaint])
       end
     end
   end

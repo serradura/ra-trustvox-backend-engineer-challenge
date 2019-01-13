@@ -10,7 +10,7 @@ module HATEOAS
     end
   end
 
-  Links = -> link_builders do
+  SetLinks = -> link_builders do
     builders = Array(link_builders)
 
     -> data { data.merge!(_links: builders.map { |build| build[data] }) }
