@@ -35,7 +35,7 @@ module Complaints
           .merge('_links' => [{
             'rel' => 'complaint',
             'href' => complaints_show_url(record_id),
-            'type' => 'GET'
+            'method' => 'GET'
           }])
       end
 
@@ -56,7 +56,7 @@ module Complaints
           .merge('_links' => [{
             'rel' => 'complaint',
             'href' => complaints_show_url(record_id),
-            'type' => 'GET'
+            'method' => 'GET'
           }])
       end
 
@@ -79,7 +79,7 @@ module Complaints
           .merge('_links' => [{
             'rel' => 'complaint',
             'href' => complaints_show_url(record_id),
-            'type' => 'GET'
+            'method' => 'GET'
           }])
       end
 

@@ -35,7 +35,7 @@ module Complaints
           .merge('_links' => [{
             'rel' => 'self',
             'href' => complaints_show_url(record_id),
-            'type' => 'GET'
+            'method' => 'GET'
           }])
 
       assert_response :ok

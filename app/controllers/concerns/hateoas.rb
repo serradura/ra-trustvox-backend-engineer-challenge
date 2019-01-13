@@ -6,7 +6,7 @@
 module HATEOAS
   LinkToGet = -> (rel, builder:) do
     -> data do
-      { rel: rel, href: builder.(data['id']), type: 'GET' }
+      { rel: rel, href: builder.(data['id']), method: 'GET' }
     end
   end
 
