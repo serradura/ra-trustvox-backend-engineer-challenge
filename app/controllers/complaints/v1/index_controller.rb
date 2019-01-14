@@ -2,7 +2,7 @@
 
 module Complaints
   module V1
-    class FetchAllController < ApplicationController
+    class IndexController < ApplicationController
       def call
         result, data = collection_fetcher.call
 

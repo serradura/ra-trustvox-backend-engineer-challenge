@@ -8,8 +8,8 @@ Rails.application.routes.draw do
   map_modular_json_resources!(
     v1: {
       complaints: {
-        index: :fetch_all,
-        show: :fetch,
+        index: :index,
+        show: :show,
         create: :create
       }
     }
