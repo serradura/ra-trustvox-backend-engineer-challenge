@@ -4,6 +4,12 @@ module Complaints
   class V1::FetchAllControllerTest < ActionDispatch::IntegrationTest
     DeleteAllComplaints = -> { Document.delete_all }
 
+    LINK_TO_SELF = {
+      "rel" => "self",
+      "href" => "http://www.example.com/complaints",
+      "method" => "GET"
+    }.freeze
+
     setup(&DeleteAllComplaints)
 
     teardown(&DeleteAllComplaints)
@@ -18,8 +24,12 @@ module Complaints
     test 'should return "ok" even there are no complaints' do
       get resource_path
 
+      expected_json = {
+        "_links" => [LINK_TO_SELF]
+      }
+
       assert_response :ok
-      assert_equal([], JSON.parse(@response.body))
+      assert_equal(expected_json, JSON.parse(@response.body))
     end
 
     test 'should return "ok" when there are complaints' do
@@ -27,7 +37,7 @@ module Complaints
 
       get resource_path
 
-      expected_json = records.map do |record|
+      serialized_records = records.map do |record|
         record_id = record.id.to_s
 
         { 'id' => record_id }
@@ -38,6 +48,11 @@ module Complaints
             'method' => 'GET'
           }])
       end
+
+      expected_json =
+        serialized_records
+          .each_with_object({}) { |rec, memo| memo[rec.delete('id')] = rec }
+          .merge!({ "_links" => [LINK_TO_SELF] })
 
       assert_response :ok
       assert_equal expected_json, JSON.parse(@response.body)
@@ -48,7 +63,7 @@ module Complaints
 
       get resource_path(format: 'json', fields: 'aaa,bbb')
 
-      expected_json = records.map do |record|
+      serialized_records = records.map do |record|
         record_id = record.id.to_s
 
         { 'id' => record_id }
@@ -60,6 +75,11 @@ module Complaints
           }])
       end
 
+      expected_json =
+        serialized_records
+          .each_with_object({}) { |rec, memo| memo[rec.delete('id')] = rec }
+          .merge!({ "_links" => [LINK_TO_SELF] })
+
       assert_response :ok
       assert_equal expected_json, JSON.parse(@response.body)
     end
@@ -69,7 +89,7 @@ module Complaints
 
       get resource_path(format: 'json', fields: 'title,company')
 
-      expected_json = records.map do |record|
+      serialized_records = records.map do |record|
         record_id = record.id.to_s
 
         { 'id' => record_id }
@@ -82,6 +102,11 @@ module Complaints
             'method' => 'GET'
           }])
       end
+
+      expected_json =
+        serialized_records
+          .each_with_object({}) { |rec, memo| memo[rec.delete('id')] = rec }
+          .merge!({ "_links" => [LINK_TO_SELF] })
 
       assert_response :ok
       assert_equal expected_json, JSON.parse(@response.body)

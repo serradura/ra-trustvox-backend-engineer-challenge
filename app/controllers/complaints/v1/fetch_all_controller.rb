@@ -4,7 +4,12 @@ module Complaints
   module V1
     class FetchAllController < ApplicationController
       def call
-        render status: 200, json: fetch_data
+        link_to_self =
+          HATEOAS::LinkToGet[:self, builder: method(:complaints_url)]
+
+        data = fetch_data.then(&HATEOAS::SetLinks[link_to_self])
+
+        render status: 200, json: data
       end
 
       private
@@ -42,7 +47,14 @@ module Complaints
         link_to_complaint =
           HATEOAS::LinkToGet[:complaint, builder: method(:complaints_item_url)]
 
-        fetch_relation.map(&serialize >> HATEOAS::SetLinks[link_to_complaint])
+        serialize_document =
+          serialize >> HATEOAS::SetLinks[link_to_complaint]
+
+        fetch_relation.each_with_object({}) do |record, memo|
+          data = serialize_document[record]
+
+          memo[data.delete('id')] = data
+        end
       end
     end
   end
