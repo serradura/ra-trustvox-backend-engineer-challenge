@@ -1,21 +1,19 @@
 # frozen_string_literal: true
 
-require_relative './routes/json_constraint'
+require_relative './routes/modular_resources_mapper'
 
 Rails.application.routes.draw do
-  namespace :complaints, constraints: Routes::JSONConstraint do
-    namespace :v1 do
-      get :fetch_all, to: 'fetch_all#call', path: 'fetch-all'
-      get 'fetch/:id', to: 'fetch#call', as: :fetch
+  extend Routes::ModularResourcesMapper
 
-      post :create, to: 'create#call'
-    end
-
-    get '/', to: 'v1/fetch_all#call'
-    post '/', to: 'v1/create#call'
-
-    get '/:id', to: 'v1/fetch#call', as: :item
-  end
+  map_modular_json_resources!(
+    v1: {
+      complaints: {
+        index: :fetch_all,
+        show: :fetch,
+        create: :create
+      }
+    }
+  )
 
   root to: 'errors/v1/not_found#call', via: :all
 

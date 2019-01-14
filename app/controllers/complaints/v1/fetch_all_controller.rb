@@ -20,7 +20,7 @@ module Complaints
 
       def collection_fetcher
         url_builders = {
-          resource: method(:complaints_item_url),
+          resource: method(:complaint_url),
           collection: method(:complaints_url)
         }
 

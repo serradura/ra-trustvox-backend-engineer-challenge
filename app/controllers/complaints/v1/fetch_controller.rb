@@ -4,7 +4,7 @@ module Complaints
   module V1
     class FetchController < ApplicationController
       def call
-        url_builder = method(:complaints_item_url)
+        url_builder = method(:complaint_url)
 
         result, data = ResourceFetcher.new(params[:id], url_builder).call
 
