@@ -34,7 +34,7 @@ module Complaints
           .merge(Fields::ALL.map { |f| [f, record[f]] }.to_h)
           .merge('_links' => [{
             'rel' => 'self',
-            'href' => complaints_show_url(record_id),
+            'href' => complaints_item_url(record_id),
             'method' => 'GET'
           }])
 

@@ -36,11 +36,11 @@ module Complaints
       #
       # assertions
       #
-      get complaints_show_url(complaint.id), headers: { 'Content-Type': 'application/json' }
+      get complaints_item_url(complaint.id), headers: { 'Content-Type': 'application/json' }
 
       refute @response.status == 404
 
-      get complaints_show_url(complaint.id, format: 'json')
+      get complaints_item_url(complaint.id, format: 'json')
 
       refute @response.status == 404
 

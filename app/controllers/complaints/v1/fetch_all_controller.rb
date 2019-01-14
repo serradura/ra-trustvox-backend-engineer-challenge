@@ -40,7 +40,7 @@ module Complaints
           Serializer.new(fields_to_select.presence || Fields::ALL)
 
         link_to_complaint =
-          HATEOAS::LinkToGet[:complaint, builder: method(:complaints_show_url)]
+          HATEOAS::LinkToGet[:complaint, builder: method(:complaints_item_url)]
 
         fetch_relation.map(&serialize >> HATEOAS::SetLinks[link_to_complaint])
       end

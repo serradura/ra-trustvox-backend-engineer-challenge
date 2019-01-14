@@ -12,9 +12,9 @@ Rails.application.routes.draw do
     end
 
     get '/', to: 'v1/fetch_all#call'
-    get '/:id', to: 'v1/fetch#call', as: :show
-
     post '/', to: 'v1/create#call'
+
+    get '/:id', to: 'v1/fetch#call', as: :item
   end
 
   root to: 'errors/v1/not_found#call', via: :all
