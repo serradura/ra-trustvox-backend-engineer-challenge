@@ -11,12 +11,12 @@ module Complaints
                   with: Errors::ExceptionHandlers::ParameterMissing
 
       def call
-        if unfilled_required_params?
-          render status: :bad_request, json: UNFILLED_REQUIRED_PARAMS
-        else
-          create_later!
+        result = Creator.new(resource_params).call
 
-          render status: :no_content
+        case result
+        when Creator::SUCCESS then render status: :no_content
+        when Creator::FAILURE then render_bad_request(UNFILLED_REQUIRED_PARAMS)
+        else raise NotImplementedError
         end
       end
 
@@ -27,14 +27,8 @@ module Complaints
                                    .permit(*Complaints::Fields::ALL)
       end
 
-      def unfilled_required_params?
-        return true if resource_params.empty?
-
-        Complaints::Fields::ALL.any? { |field| resource_params[field].nil? }
-      end
-
-      def create_later!
-        CreateJob.perform_later(resource_params.as_json)
+      def render_bad_request(data)
+        render status: :bad_request, json: data
       end
     end
   end
