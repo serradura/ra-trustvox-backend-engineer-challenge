@@ -1,27 +1,22 @@
 # frozen_string_literal: true
 
 require_relative './routes/json_constraint'
-
-MapV1Resource = -> (only, controller:) do
-  {only: only, module: :v1, controller: controller, action: :call}
-end
-
-MapBaseResource = -> (only, controller:) do
-  { constraints: Routes::JSONConstraint, path: '' }
-    .merge!(MapV1Resource[only, controller: controller])
-end
+require_relative './routes/mappers'
 
 Rails.application.routes.draw do
+  map_v1_resource = Routes::Mappers::MapV1Resource
+  map_base_resource = Routes::Mappers::MapBaseResource
+
   namespace :v1, module: :complaints, constraints: Routes::JSONConstraint do
-    resources :complaints, MapV1Resource[:index, controller: :fetch_all]
-    resources :complaints, MapV1Resource[:show, controller: :fetch]
-    resources :complaints, MapV1Resource[:create, controller: :create]
+    resources :complaints, map_v1_resource[:index, controller: :fetch_all]
+    resources :complaints, map_v1_resource[:show, controller: :fetch]
+    resources :complaints, map_v1_resource[:create, controller: :create]
   end
 
   scope :complaints, module: :complaints do
-    resources :complaints, MapBaseResource[:index, controller: :fetch_all]
-    resources :complaints, MapBaseResource[:show, controller: :fetch]
-    resources :complaints, MapBaseResource[:create, controller: :create]
+    resources :complaints, map_base_resource[:index, controller: :fetch_all]
+    resources :complaints, map_base_resource[:show, controller: :fetch]
+    resources :complaints, map_base_resource[:create, controller: :create]
   end
 
   root to: 'errors/v1/not_found#call', via: :all
