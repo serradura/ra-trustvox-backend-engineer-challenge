@@ -7,16 +7,30 @@ Rails.application.routes.draw do
   map_v1_resource = Routes::Mappers::MapV1Resource
   map_base_resource = Routes::Mappers::MapBaseResource
 
-  namespace :v1, module: :complaints, constraints: Routes::JSONConstraint do
-    resources :complaints, map_v1_resource[:index, controller: :fetch_all]
-    resources :complaints, map_v1_resource[:show, controller: :fetch]
-    resources :complaints, map_v1_resource[:create, controller: :create]
-  end
+  {
+    v1: {
+      complaints: {
+        index: :fetch_all,
+        show: :fetch,
+        create: :create
+      }
+    }
+  }.each do |version, resource_names|
+    resource_names.each do |resource_name, scheme|
+      namespace version, module: resource_name, constraints: Routes::JSONConstraint do
+        scheme.each do |action, controller|
+          resources resource_name, map_v1_resource[action, controller: controller]
+        end
+      end
+    end
 
-  scope :complaints, module: :complaints do
-    resources :complaints, map_base_resource[:index, controller: :fetch_all]
-    resources :complaints, map_base_resource[:show, controller: :fetch]
-    resources :complaints, map_base_resource[:create, controller: :create]
+    resource_names.each do |resource_name, scheme|
+      scope resource_name, module: resource_name do
+        scheme.each do |action, controller|
+          resources resource_name, map_base_resource[action, controller: controller]
+        end
+      end
+    end
   end
 
   root to: 'errors/v1/not_found#call', via: :all
