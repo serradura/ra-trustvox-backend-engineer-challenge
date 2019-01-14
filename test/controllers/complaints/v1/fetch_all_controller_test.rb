@@ -15,7 +15,7 @@ module Complaints
     teardown(&DeleteAllComplaints)
 
     test 'should return "not found" when it has invalid constraints' do
-      get complaints_v1_fetch_all_url
+      get v1_complaints_url
 
       assert_response :not_found
       assert_response_error 'the requested resource was not found'
@@ -44,7 +44,7 @@ module Complaints
           .merge(Fields::ALL.map { |f| [f, record[f]] }.to_h)
           .merge('_links' => [{
             'rel' => 'complaint',
-            'href' => complaints_item_url(record_id),
+            'href' => complaint_url(record_id),
             'method' => 'GET'
           }])
       end
@@ -70,7 +70,7 @@ module Complaints
           .merge(Fields::ALL.map { |f| [f, record[f]] }.to_h)
           .merge('_links' => [{
             'rel' => 'complaint',
-            'href' => complaints_item_url(record_id),
+            'href' => complaint_url(record_id),
             'method' => 'GET'
           }])
       end
@@ -98,7 +98,7 @@ module Complaints
           )
           .merge('_links' => [{
             'rel' => 'complaint',
-            'href' => complaints_item_url(record_id),
+            'href' => complaint_url(record_id),
             'method' => 'GET'
           }])
       end
@@ -115,7 +115,7 @@ module Complaints
     private
 
     def resource_path(options = {format: 'json'})
-      complaints_v1_fetch_all_url(options)
+      v1_complaints_url(options)
     end
   end
 end

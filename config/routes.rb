@@ -2,19 +2,26 @@
 
 require_relative './routes/json_constraint'
 
+MapV1Resource = -> (only, controller:) do
+  {only: only, module: :v1, controller: controller, action: :call}
+end
+
+MapBaseResource = -> (only, controller:) do
+  { constraints: Routes::JSONConstraint, path: '' }
+    .merge!(MapV1Resource[only, controller: controller])
+end
+
 Rails.application.routes.draw do
-  namespace :complaints, constraints: Routes::JSONConstraint do
-    namespace :v1 do
-      get :fetch_all, to: 'fetch_all#call', path: 'fetch-all'
-      get 'fetch/:id', to: 'fetch#call', as: :fetch
+  namespace :v1, module: :complaints, constraints: Routes::JSONConstraint do
+    resources :complaints, MapV1Resource[:index, controller: :fetch_all]
+    resources :complaints, MapV1Resource[:show, controller: :fetch]
+    resources :complaints, MapV1Resource[:create, controller: :create]
+  end
 
-      post :create, to: 'create#call'
-    end
-
-    get '/', to: 'v1/fetch_all#call'
-    post '/', to: 'v1/create#call'
-
-    get '/:id', to: 'v1/fetch#call', as: :item
+  scope :complaints, module: :complaints do
+    resources :complaints, MapBaseResource[:index, controller: :fetch_all]
+    resources :complaints, MapBaseResource[:show, controller: :fetch]
+    resources :complaints, MapBaseResource[:create, controller: :create]
   end
 
   root to: 'errors/v1/not_found#call', via: :all
