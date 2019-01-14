@@ -1,12 +1,7 @@
 # frozen_string_literal: true
 
 module Complaints
-  class Creator
-    RESULTS = [
-      FAILURE = :failure,
-      SUCCESS = :created
-    ].freeze
-
+  class Creator < ApplicationService
     def initialize(params)
       @params = params
     end
