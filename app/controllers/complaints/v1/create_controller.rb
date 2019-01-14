@@ -3,7 +3,7 @@
 module Complaints
   module V1
     class CreateController < ApplicationController
-      UNFILLED_REQUIRED_PARAMS_ERROR = Errors::Serializer.call(
+      UNFILLED_REQUIRED_PARAMS = Errors::Serializer.call(
         "required params are unfilled: #{Complaints::Fields::ALL}"
       )
 
@@ -12,7 +12,7 @@ module Complaints
 
       def call
         if unfilled_required_params?
-          render status: :bad_request, json: UNFILLED_REQUIRED_PARAMS_ERROR
+          render status: :bad_request, json: UNFILLED_REQUIRED_PARAMS
         else
           create_later!
 
