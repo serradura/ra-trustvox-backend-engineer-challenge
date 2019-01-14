@@ -2,7 +2,7 @@
 
 module Complaints
   module V1
-    class FetchController < ApplicationController
+    class ShowController < ApplicationController
       rescue_from Mongoid::Errors::DocumentNotFound do
         result =
           Errors::Serializer["complaint not found with id: \"#{params[:id]}\""]
@@ -14,7 +14,7 @@ module Complaints
         record = Document.find(params[:id])
 
         link_to_complaint =
-          HATEOAS::LinkToGet[:self, builder: method(:complaints_item_url)]
+          HATEOAS::LinkToGet[:self, builder: method(:complaint_url)]
 
         serialize =
           Serializer.new(Fields::ALL) >> HATEOAS::SetLinks[link_to_complaint]

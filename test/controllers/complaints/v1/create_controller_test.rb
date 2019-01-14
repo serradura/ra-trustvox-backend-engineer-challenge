@@ -3,11 +3,11 @@ require 'test_helper'
 module Complaints
   class V1::CreateControllerTest < ActionDispatch::IntegrationTest
     setup do
-      @resource_path = complaints_v1_create_url(format: 'json')
+      @resource_path = v1_complaints_url(format: 'json')
     end
 
     test 'should return "not found" when it has invalid constraints' do
-      post complaints_v1_create_url
+      post v1_complaints_url
 
       assert_response :not_found
       assert_response_error 'the requested resource was not found'
