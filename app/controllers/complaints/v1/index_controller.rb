@@ -2,7 +2,7 @@
 
 module Complaints
   module V1
-    class FetchAllController < ApplicationController
+    class IndexController < ApplicationController
       def call
         link_to_self =
           HATEOAS::LinkToGet[:self, builder: method(:complaints_url)]
@@ -45,7 +45,7 @@ module Complaints
           Serializer.new(fields_to_select.presence || Fields::ALL)
 
         link_to_complaint =
-          HATEOAS::LinkToGet[:complaint, builder: method(:complaints_item_url)]
+          HATEOAS::LinkToGet[:complaint, builder: method(:complaint_url)]
 
         serialize_document =
           serialize >> HATEOAS::SetLinks[link_to_complaint]
