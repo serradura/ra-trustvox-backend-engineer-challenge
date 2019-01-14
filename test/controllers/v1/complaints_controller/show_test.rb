@@ -1,15 +1,15 @@
 require 'test_helper'
 
-module Complaints
-  class V1::FetchControllerTest < ActionDispatch::IntegrationTest
-    DeleteAllComplaints = -> { Document.delete_all }
+module V1
+  class ComplaintsController::ShowTest < ActionDispatch::IntegrationTest
+    DeleteAllComplaints = -> { ::Complaints::Document.delete_all }
 
     setup(&DeleteAllComplaints)
 
     teardown(&DeleteAllComplaints)
 
     test 'should return "not found" when it has invalid constraints' do
-      get complaints_v1_fetch_url(create_complaint!.id)
+      get v1_complaint_url(create_complaint!.id)
 
       assert_response :not_found
       assert_response_error 'the requested resource was not found'
@@ -31,10 +31,10 @@ module Complaints
 
       expected_json =
         { 'id' => record_id }
-          .merge(Fields::ALL.map { |f| [f, record[f]] }.to_h)
+          .merge(::Complaints::Fields::ALL.map { |f| [f, record[f]] }.to_h)
           .merge('_links' => [{
             'rel' => 'self',
-            'href' => complaints_item_url(record_id),
+            'href' => complaint_url(record_id),
             'method' => 'GET'
           }])
 
@@ -45,7 +45,7 @@ module Complaints
     private
 
     def resource_path(id)
-      complaints_v1_fetch_url(id, format: 'json')
+      v1_complaint_url(id, format: 'json')
     end
   end
 end

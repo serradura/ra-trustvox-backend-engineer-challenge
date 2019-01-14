@@ -1,13 +1,13 @@
 require 'test_helper'
 
-module Complaints
-  class V1::CreateControllerTest < ActionDispatch::IntegrationTest
+module V1
+  class ComplaintsController::CreateTest < ActionDispatch::IntegrationTest
     setup do
-      @resource_path = complaints_v1_create_url(format: 'json')
+      @resource_path = v1_complaints_url(format: 'json')
     end
 
     test 'should return "not found" when it has invalid constraints' do
-      post complaints_v1_create_url
+      post v1_complaints_url
 
       assert_response :not_found
       assert_response_error 'the requested resource was not found'
@@ -83,7 +83,7 @@ module Complaints
         #
         # assertions
         #
-        assert_changes -> { Document.count } do
+        assert_changes -> { ::Complaints::Document.count } do
           post @resource_path, params: {
             complaint: { title: 'a', locale: 'b', company: 'c', description: 'd'}
           }
@@ -94,7 +94,7 @@ module Complaints
         #
         # teardown
         #
-        Document.delete_all
+        ::Complaints::Document.delete_all
         ActiveJob::Base.queue_adapter = queue_adapter
       end
     end

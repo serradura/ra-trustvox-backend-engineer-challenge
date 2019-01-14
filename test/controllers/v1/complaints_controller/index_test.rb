@@ -1,8 +1,8 @@
 require 'test_helper'
 
-module Complaints
-  class V1::FetchAllControllerTest < ActionDispatch::IntegrationTest
-    DeleteAllComplaints = -> { Document.delete_all }
+module V1
+  class ComplaintsController::IndexTest < ActionDispatch::IntegrationTest
+    DeleteAllComplaints = -> { ::Complaints::Document.delete_all }
 
     LINK_TO_SELF = {
       "rel" => "self",
@@ -15,7 +15,7 @@ module Complaints
     teardown(&DeleteAllComplaints)
 
     test 'should return "not found" when it has invalid constraints' do
-      get complaints_v1_fetch_all_url
+      get v1_complaints_url
 
       assert_response :not_found
       assert_response_error 'the requested resource was not found'
@@ -41,10 +41,10 @@ module Complaints
         record_id = record.id.to_s
 
         { 'id' => record_id }
-          .merge(Fields::ALL.map { |f| [f, record[f]] }.to_h)
+          .merge(::Complaints::Fields::ALL.map { |f| [f, record[f]] }.to_h)
           .merge('_links' => [{
             'rel' => 'complaint',
-            'href' => complaints_item_url(record_id),
+            'href' => complaint_url(record_id),
             'method' => 'GET'
           }])
       end
@@ -67,10 +67,10 @@ module Complaints
         record_id = record.id.to_s
 
         { 'id' => record_id }
-          .merge(Fields::ALL.map { |f| [f, record[f]] }.to_h)
+          .merge(::Complaints::Fields::ALL.map { |f| [f, record[f]] }.to_h)
           .merge('_links' => [{
             'rel' => 'complaint',
-            'href' => complaints_item_url(record_id),
+            'href' => complaint_url(record_id),
             'method' => 'GET'
           }])
       end
@@ -94,11 +94,12 @@ module Complaints
 
         { 'id' => record_id }
           .merge(
-            [Fields::TITLE, Fields::COMPANY].map { |f| [f, record[f]] }.to_h
+            [::Complaints::Fields::TITLE, ::Complaints::Fields::COMPANY]
+              .map { |f| [f, record[f]] }.to_h
           )
           .merge('_links' => [{
             'rel' => 'complaint',
-            'href' => complaints_item_url(record_id),
+            'href' => complaint_url(record_id),
             'method' => 'GET'
           }])
       end
@@ -115,7 +116,7 @@ module Complaints
     private
 
     def resource_path(options = {format: 'json'})
-      complaints_v1_fetch_all_url(options)
+      v1_complaints_url(options)
     end
   end
 end
