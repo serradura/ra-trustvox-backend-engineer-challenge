@@ -4,7 +4,7 @@ module Complaints
   module V1
     class CreateController < ApplicationController
       UNFILLED_REQUIRED_PARAMS = Errors::Serializer.call(
-        "required params are unfilled: #{Complaints::Fields::ALL}"
+        "required params are unfilled: #{Fields::ALL}"
       )
 
       rescue_from ActionController::ParameterMissing,
@@ -24,7 +24,7 @@ module Complaints
 
       def resource_params
         @resource_params ||= params.require(:complaint)
-                                   .permit(*Complaints::Fields::ALL)
+                                   .permit(*Fields::ALL)
       end
 
       def render_bad_request(data)

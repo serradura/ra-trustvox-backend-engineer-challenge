@@ -3,7 +3,7 @@
 class ApplicationService
   RESULTS = [
     FAILURE = :failure,
-    SUCCESS = :created
+    SUCCESS = :success
   ].freeze
 
   def call

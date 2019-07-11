@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module Complaints
-  class V1::FetchAllControllerTest < ActionDispatch::IntegrationTest
+  class V1::IndexControllerTest < ActionDispatch::IntegrationTest
     DeleteAllComplaints = -> { Document.delete_all }
 
     LINK_TO_SELF = {

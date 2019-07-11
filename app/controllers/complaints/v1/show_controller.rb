@@ -2,7 +2,7 @@
 
 module Complaints
   module V1
-    class FetchController < ApplicationController
+    class ShowController < ApplicationController
       def call
         url_builder = method(:complaint_url)
 
