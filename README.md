@@ -1,3 +1,5 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/2fcd0e1d5e3144a903b5/maintainability)](https://codeclimate.com/github/serradura/ra-trustvox-backend-engineer-challenge/maintainability)
+
 # RA Trustvox - Backend Engineer Challenge
 
 To achieve some of the [challenge goals](https://gist.github.com/cleytonmessias/6098d0747743620dfc58f977a8f1ded7),
