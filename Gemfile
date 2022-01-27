@@ -11,7 +11,7 @@ gem 'puma', '~> 3.11'
 # Use Mongodb as the database
 gem 'mongoid', '~> 7.0', '>= 7.0.2'
 
-gem 'sidekiq', '~> 5.2', '>= 5.2.5'
+gem 'sidekiq', '~> 6.4'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
